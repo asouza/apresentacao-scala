@@ -3,89 +3,61 @@ package br.com.caelum.livraria
 import org.scalatest.FlatSpec
 import org.scalatest.matchers.ShouldMatchers
 import java.math.BigDecimal
-import java.util.Calendar
 import org.hibernate.Session
 import org.mockito.Mockito
 import br.com.caelum.livraria.Conversions._
-import techtalk.Livro
+import collection.immutable.List
+import java.util.{Scanner, Calendar}
 
 
 class LivroSpec extends FlatSpec with ShouldMatchers {
-  behavior of "promocao"
+  behavior of "bigdecimal"
 
-  ignore should "melhorar o uso de bigdecimal" in {
-    //aqui é meio chato ficar trabalhando com isso
-    new Livro(nome = "techday",preco = "20.5")
+
+  it should "deixar menos chato passar bigdecimal como parametro" in {
+    val livro = new Livro("Tech talk", "25")
+    println(livro.preco)
   }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
 
-  ignore should "melhorar a caca do calendar" in {
-    val livro = new Livro(nome = "tomara que de certo",preco = new BigDecimal(23.0))
-    /*
-      problemas?
-      nao posso usar hoje e ir somando pq é mutavel...
-      verborragico
-     */
-//    val doisDiasAtras = Calendar.getInstance()
-//    doisDiasAtras.add(Calendar.DAY_OF_MONTH,-2)
-//    livro.dataDeInicioDePromocao = doisDiasAtras
+
+  it should "deixar calendar menos bostetico" in {
     val hoje = Calendar.getInstance
-    livro.dataDeInicioDePromocao = hoje minus 2.days
-//    val daquiA4Dias = Calendar.getInstance()
-//    daquiA4Dias.add(Calendar.DAY_OF_MONTH,4)
-//    livro.dataDeFimDePromocao = daquiA4Dias
+    //manguezinho para mostrar a caca
+    //        hoje.+( 1). dia
+    val amanha = hoje.plusDay(1)
 
-    livro.dataDeFimDePromocao = hoje plus 4.days
-    println(livro.dataDeFimDePromocao.getTime)
-    livro.verificaPeriodoDePromocaoParaA(Calendar.getInstance())
+    println(hoje.getTime)
+
   }
 
   behavior of "salvando de forma marota"
 
-  ignore should  "salvar de uma maneira esperta" in {
-      implicit val session = new FakeSession
-      val livro = new Livro(nome = "techday",preco = "23.4")
-      //new LivroDAO(session).save(livro)
-      //livro.save(session)
-      livro.save
+  it should "salvar de uma maneira esperta" in {
+    implicit val session = new FakeSession
+    val livro = new Livro("techday", "25")
+    livro.save
   }
 
-  ignore should "buscar evitando null pointer" in {
-      implicit val session = new FakeSession
-    val livro = new Livros().by(2)
-    println(livro.nome)
+  it should "buscar evitando null pointer" in {
+    implicit val session = new FakeSession
+    val livroAchado = new Livros().findById(2)
+    println(livroAchado.getOrElse(
+      new Livro(nome = "nao achou", preco = "25")))
   }
 
-  ignore should "buscar dinamicamente" in {
-       implicit val session = new FakeSession
-       new Livros().findByName("techtalk")
+  it should "duck typing" in {
+    //
   }
 
+  it should "enviarEmailUsandoCommons" in {
 
+    //exemplo de funcional com map
+  }
 
+  it should "buscar dinamicamente" in {
+    implicit val session = new FakeSession
+    new Livros().findByName("carnaval em 7 dias")
+  }
 
 
 

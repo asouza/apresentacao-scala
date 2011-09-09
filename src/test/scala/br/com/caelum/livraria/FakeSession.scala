@@ -5,9 +5,22 @@ import org.hibernate._
 import jdbc.Work
 import java.sql.Connection
 import java.math.BigDecimal
-import techtalk.Livro
 
 class FakeSession extends Session{
+
+    def get(clazz: Class[_], obj: Serializable) = {
+      //#mangue para apresentacao
+      val id = obj.asInstanceOf[Long]
+      if(id==1)
+        new Livro(nome="Achou",preco = BigDecimal.ZERO)
+      else null
+    }
+
+    def save(p1: AnyRef) = {
+      println("Salvando... "+p1)
+      null
+    }
+
   def getLobHelper = null
 
   def getTypeHelper = null
@@ -49,12 +62,6 @@ class FakeSession extends Session{
   def get(p1: Class[_], p2: Serializable, p3: LockOptions) = null
 
   def get(p1: Class[_], p2: Serializable, p3: LockMode) = null
-
-  def get(clazz: Class[_], obj: Serializable) = {
-    //#mangue para apresentacao
-    val id = obj.asInstanceOf[Long]
-    if(id==1) new Livro(nome="Achou",preco = BigDecimal.ZERO) else null
-  }
 
   def clear() {}
 
@@ -114,10 +121,7 @@ class FakeSession extends Session{
 
   def save(p1: String, p2: AnyRef) = null
 
-  def save(p1: AnyRef) = {
-    println("Salvando... "+p1)
-    null
-  }
+
 
   def replicate(p1: String, p2: AnyRef, p3: ReplicationMode) {}
 

@@ -1,0 +1,13 @@
+.DS_Store
+target
+.sbt
+project/boot
+lib_managed
+.idea
+*.class
+*.iml
+src/main/webapp/WEB-INF/classes
+project/plugins/
+logs/
+latest_snapshot.sql
+bin/recover_db.sh

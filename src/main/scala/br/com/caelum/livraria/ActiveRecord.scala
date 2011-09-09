@@ -2,10 +2,14 @@ package br.com.caelum.livraria
 
 import org.hibernate.Session
 
-object ActiveRecord {
+class ActiveRecord {
 
-  implicit def save(obj:{def id:Long})(implicit session:Session) = new {
+  type ComId = {def id:Long}
+
+  def save(obj:ComId)(implicit session:Session) = new {
+    obj.id
     session.save(obj)
   }
+
 
 }

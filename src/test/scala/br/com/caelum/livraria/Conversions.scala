@@ -5,24 +5,13 @@ import java.util.Calendar
 
 object Conversions {
 
-//  implicit def string2BigDecimal(value:String) = new BigDecimal(value)
+  implicit def str2Bd(str:String) = new BigDecimal(str)
 
-  //conversao do calendar
-  implicit def calendar2NonShitCalendar(calendar:Calendar) = new {
-    def plus(value:Int) = {
-      val clonedCalendar = calendar.clone.asInstanceOf[Calendar]
-      clonedCalendar.add(Calendar.DAY_OF_MONTH,value)
-      clonedCalendar
+  implicit def calendarBostetico2PimpedCaledar(cal:Calendar) = new {
+    def plusDay(num:Int) = {
+      val copia = cal.clone.asInstanceOf[Calendar]
+      copia.add(Calendar.DAY_OF_MONTH,num)
+      copia
     }
-
-    def minus(value:Int) = {
-      val clonedCalendar = calendar.clone.asInstanceOf[Calendar]
-      clonedCalendar.add(Calendar.DAY_OF_MONTH,value * -1)
-      clonedCalendar
-    }
-  }
-
-  implicit def int2PimpedInt(value:Int) = new {
-    def days = value
   }
 }
