@@ -20,8 +20,8 @@ class GnarusProject(info:ProjectInfo)
   val mysql         = "mysql"                   % "mysql-connector-java"  % "5.1.15"          % "compile"
   val jsp           = "org.mortbay.jetty"       % "jsp-2.1"               % "6.1.14"          % "provided"
   val servlet       = "javax.servlet"           % "servlet-api"           % "2.5"          % "provided"
-  val core          = "com.github.scala-incubator.io" %% "core"           % "0.2.0-SNAPSHOT"
-  val file          = "com.github.scala-incubator.io" %% "file"           % "0.2.0-SNAPSHOT"
+//  val core          = "com.github.scala-incubator.io" %% "core"           % "0.2.0-SNAPSHOT"
+//  val file          = "com.github.scala-incubator.io" %% "file"           % "0.2.0-SNAPSHOT"
 
   val jetty6        = "org.mortbay.jetty"       % "jetty"                 % "6.1.22"          % "test"
   val scalatest     = "org.scalatest"           % "scalatest_2.9.0"       % "1.6.1"           % "test"
