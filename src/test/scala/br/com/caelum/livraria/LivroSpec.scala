@@ -2,19 +2,22 @@ package br.com.caelum.livraria
 
 import org.scalatest.FlatSpec
 import org.scalatest.matchers.ShouldMatchers
-import java.math.BigDecimal
 import org.hibernate.Session
-import org.mockito.Mockito
 import collection.immutable.List
 import java.util.{Scanner, Calendar}
+import java.lang.Long
 
 
 class LivroSpec extends FlatSpec with ShouldMatchers {
+
   behavior of "bigdecimal"
 
+  implicit def string2bigdecimal(str:String) = BigDecimal(str)
+
   it should "deixar menos chato passar bigdecimal como parametro" in {
-    val livro = new Livro("Tech talk", new BigDecimal(25.44))
+    val livro = new Livro("Tech talk", "25.44")
     imprime(livro.preco)
+
   }
 
 
@@ -38,19 +41,19 @@ class LivroSpec extends FlatSpec with ShouldMatchers {
 
 
 
+  implicit def calendarBostetico2Maroto(cal:Calendar) = new {
+     def plusDay(num:Int) = {
+       val novo = cal.clone().asInstanceOf[Calendar]
+       novo.add(Calendar.DAY_OF_MONTH, num)
+       novo
+     }
+  }
 
-
-
-
-
-
-
-
-  ignore should "deixar calendar menos bostetico" in {
+  it should "deixar calendar menos bostetico" in {
+    import br.com.caelum.livraria.ConverterMaroto._
     val hoje = Calendar.getInstance
 
-    val amanha = hoje
-    amanha.add(Calendar.DAY_OF_MONTH, 1)
+    val amanha = hoje + 20 dia
 
     hoje should not be amanha
   }
@@ -78,7 +81,7 @@ class LivroSpec extends FlatSpec with ShouldMatchers {
 
 
 
-  ignore should "usar collections eficientemente" in {
+  it should "usar collections eficientemente" in {
       val livros = List(
          Livro("Scala in action", new BigDecimal("99.99")),
          Livro("Livro de arquitetura", new BigDecimal("123")),
@@ -88,6 +91,8 @@ class LivroSpec extends FlatSpec with ShouldMatchers {
          Livro("Lua Nova", new BigDecimal("99.99")),
          Livro("Amanhecer", new BigDecimal("99.99"))
       )
+
+    livros.map(_.nome).foreach(println)
 
   }
 
@@ -115,11 +120,15 @@ class LivroSpec extends FlatSpec with ShouldMatchers {
 
   behavior of "salvando de forma marota"
 
-  ignore should "salvar de uma maneira esperta" in {
-    val session = new FakeSession
+  implicit def obj2AR(obj:{def id:Long}) = new ActiveRecord(new FakeSession, obj)
+
+  it should "salvar de uma maneira esperta" in {
+    implicit val session = new FakeSession
+
     val livro = new Livro("techday", new BigDecimal("25"))
-    val dao = new LivroDAO(session)
-    dao.save(livro)
+
+    livro.save
+
   }
 
 
@@ -142,10 +151,13 @@ class LivroSpec extends FlatSpec with ShouldMatchers {
 
 
 
-  ignore should "buscar evitando null pointer" in {
+  it should "buscar evitando null pointer" in {
     val session = new FakeSession
     val livroAchado = new Livros(session).by(id = 2)
-    println(livroAchado.nome)
+
+
+    val livro = livroAchado.getOrElse(new Livro(nome = "", preco = new BigDecimal("0")))
+    println(livro.nome)
   }
 
 
@@ -210,9 +222,12 @@ class LivroSpec extends FlatSpec with ShouldMatchers {
 
 
 
-  ignore should "trabalhar bem com operações lentas" in {
+  it should "trabalhar bem com operações lentas" in {
     val t1 = System.currentTimeMillis
 
+    (1 to 1000).par.foreach({  n=>
+      Thread.sleep(5)
+    })
 
     val t2 = System.currentTimeMillis
     imprime(t2-t1)
@@ -242,9 +257,9 @@ class LivroSpec extends FlatSpec with ShouldMatchers {
 
 
 
-  ignore should "buscar dinamicamente" in {
+  it should "buscar dinamicamente" in {
     val session = new FakeSession
-    new Livros(session).by(id = 2)
+    new Livros(session).byNome("jao")
   }
 
 
