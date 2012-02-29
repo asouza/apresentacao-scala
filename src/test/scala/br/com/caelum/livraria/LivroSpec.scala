@@ -7,13 +7,17 @@ import org.hibernate.Session
 import org.mockito.Mockito
 import collection.immutable.List
 import java.util.{Scanner, Calendar}
-
+import Conversions._
+import scala.collection.JavaConversions._
 
 class LivroSpec extends FlatSpec with ShouldMatchers {
   behavior of "bigdecimal"
 
+  implicit def str2bigDecimal(str:String) = new BigDecimal(str)
+
   it should "deixar menos chato passar bigdecimal como parametro" in {
-    val livro = new Livro("Tech talk", new BigDecimal(25.44))
+    val livro = new Livro("Tech talk", "25.44")
+
     imprime(livro.preco)
   }
 
@@ -44,13 +48,10 @@ class LivroSpec extends FlatSpec with ShouldMatchers {
 
 
 
-
-
-  ignore should "deixar calendar menos bostetico" in {
+  it should "deixar calendar menos bostetico" in {
     val hoje = Calendar.getInstance
 
-    val amanha = hoje
-    amanha.add(Calendar.DAY_OF_MONTH, 1)
+    val amanha = hoje + 1 dia
 
     hoje should not be amanha
   }
@@ -78,98 +79,18 @@ class LivroSpec extends FlatSpec with ShouldMatchers {
 
 
 
-  ignore should "usar collections eficientemente" in {
-      val livros = List(
-         Livro("Scala in action", new BigDecimal("99.99")),
-         Livro("Livro de arquitetura", new BigDecimal("123")),
-         Livro("REST in practice", new BigDecimal("49.99")),
-         Livro("Crepusculo", new BigDecimal("99.99")),
-         Livro("Eclipse", new BigDecimal("99.99")),
-         Livro("Lua Nova", new BigDecimal("99.99")),
-         Livro("Amanhecer", new BigDecimal("99.99"))
-      )
-
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   behavior of "salvando de forma marota"
 
-  ignore should "salvar de uma maneira esperta" in {
-    val session = new FakeSession
+  it should "salvar de uma maneira esperta" in {
+//    implicit val session = new FakeSession
+
     val livro = new Livro("techday", new BigDecimal("25"))
-    val dao = new LivroDAO(session)
-    dao.save(livro)
-  }
+//    val dao = new LivroDAO(session)
+//    dao.save(livro)
+    val janeiro = Calendar.getInstance()
 
+     livro.getVendasAPartirDe(janeiro)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  ignore should "buscar evitando null pointer" in {
-    val session = new FakeSession
-    val livroAchado = new Livros(session).by(id = 2)
-    println(livroAchado.nome)
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  ignore should "duck typing" in {
-    //
   }
 
 
@@ -210,13 +131,29 @@ class LivroSpec extends FlatSpec with ShouldMatchers {
 
 
 
-  ignore should "trabalhar bem com operações lentas" in {
-    val t1 = System.currentTimeMillis
 
 
-    val t2 = System.currentTimeMillis
-    imprime(t2-t1)
-  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
